@@ -1,0 +1,38 @@
+# Created by .ignore support plugin (hsz.mobi)
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# IDE specific files
+.idea
+*.iml
+*.iws
+*.ipr
+
+# Build directories
+/out/
+/target/
+*/target/
+
+# Temporary local folder (used for logging for example)
+/tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# Eclipse
+.checkstyle
+.classpath
+.fbExcludeFilterFile
+.project
+.settings
