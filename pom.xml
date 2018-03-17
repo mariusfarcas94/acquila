@@ -8,5 +8,494 @@
     <artifactId>projects</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.8.RELEASE</version>
+    </parent>
+
+    <properties>
+        <!--General project properties-->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!--Java -->
+        <java.version>1.8</java.version>
+
+        <!-- Controls if the project version can be a snapshot and also if we are allowed to have snapshot dependencies.
+        Used for release - we should never "release" a snapshot version and it should never have snapshot dependencies,
+        but this is allowed (and necessary) in development.
+        The release builds are always created with this set to "false". -->
+        <snapshotsAllowed>true</snapshotsAllowed>
+
+        <!-- Spring boot overwrites -->
+        <spring.version>4.3.12.RELEASE</spring.version>
+        <spring.boot.version>1.5.8.RELEASE</spring.boot.version>
+        <spring.boot.amqp.version>1.5.8.RELEASE</spring.boot.amqp.version>
+        <hazelcast.version>3.8.8</hazelcast.version>
+        <hibernate.version>5.2.12.Final</hibernate.version>
+        <hibernate-validator.version>5.4.2.Final</hibernate-validator.version>
+        <postgresql-driver.version>42.1.4</postgresql-driver.version>
+        <zaxxer.hikari.version>2.7.2</zaxxer.hikari.version>
+        <flyway.version>4.2.0</flyway.version>
+
+        <!--Other dependencies-->
+        <lombok.version>1.16.18</lombok.version>
+        <commons-lang3.version>3.6</commons-lang3.version>
+        <commons-io-version>2.5</commons-io-version>
+        <h2.version>1.4.196</h2.version>
+        <apache.commons.collections>4.0</apache.commons.collections>
+        <apache.commons.text>1.1</apache.commons.text>
+        <apache.commons.codec>1.9</apache.commons.codec>
+        <powermock.version>1.7.3</powermock.version>
+
+        <!--Maven plugin dependencies-->
+        <mvnPlugin.compiler.version>3.7.0</mvnPlugin.compiler.version>
+        <mvnPlugin.enforcer.version>1.4.1</mvnPlugin.enforcer.version>
+        <mvnPlugin.versioning.version>2.5</mvnPlugin.versioning.version>
+        <mvnPlugin.scm.version>1.9.5</mvnPlugin.scm.version>
+        <mvnPlugin.deploy.version>2.8.2</mvnPlugin.deploy.version>
+
+        <mvnPlugin.checkstyle.version>2.17</mvnPlugin.checkstyle.version>
+        <mvnPlugin.checkstyle.config>${project.basedir}/project-config/checkstyle</mvnPlugin.checkstyle.config>
+        <mvnPlugin.checkstyle.licenseHeader>${mvnPlugin.checkstyle.config}/LICENSE.txt
+        </mvnPlugin.checkstyle.licenseHeader>
+        <mvnPlugin.checkstyle.mainConfig>${mvnPlugin.checkstyle.config}/checkstyle.xml</mvnPlugin.checkstyle.mainConfig>
+        <mvnPlugin.checkstyle.suppressionConfig>${mvnPlugin.checkstyle.config}/checkstyle-suppressions.xml
+        </mvnPlugin.checkstyle.suppressionConfig>
+
+        <mvnPlugin.findbugs.version>3.0.3</mvnPlugin.findbugs.version>
+        <mvnPlugin.findbugs.config>${project.basedir}/project-config/findbugs</mvnPlugin.findbugs.config>
+        <mvnPlugin.findbugs.findbugsXmlOutputDirectory>${project.basedir}/target
+        </mvnPlugin.findbugs.findbugsXmlOutputDirectory>
+        <mvnPlugin.findbugs.excludeFilterFile>${mvnPlugin.findbugs.config}/findbugs-excludes.xml
+        </mvnPlugin.findbugs.excludeFilterFile>
+
+        <mvnPlugin.jacoco.version>0.7.5.201505241946</mvnPlugin.jacoco.version>
+        <mvnPlugin.jacoco.reportPath>${project.basedir}/target/jacoco.exec</mvnPlugin.jacoco.reportPath>
+        <os.maven.plugin.version>1.5.0.Final</os.maven.plugin.version>
+
+        <mvnPlugin.surefire.version>2.20.1</mvnPlugin.surefire.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>${apache.commons.collections}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${apache.commons.codec}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>${apache.commons.text}</version>
+        </dependency>
+
+
+        <!--Persistence dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>${spring.boot.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate-entitymanager</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql-driver.version}</version>
+        </dependency>
+
+        <!-- H2 dependencies -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>${flyway.version}</version>
+        </dependency>
+
+        <!--Hikari datasource connection pool -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>${zaxxer.hikari.version}</version>
+        </dependency>
+
+        <!--  Hazelcast-spring dependencies -->
+        <dependency>
+            <groupId>com.hazelcast</groupId>
+            <artifactId>hazelcast-spring</artifactId>
+            <version>${hazelcast.version}</version>
+        </dependency>
+
+        <!-- PowerMock -->
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!--Log4j2-->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>${os.maven.plugin.version}</version>
+            </extension>
+        </extensions>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${mvnPlugin.compiler.version}</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${mvnPlugin.surefire.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring.boot.version}</version>
+                    <configuration>
+                        <!--Make the resulting jars executable (can be ran
+                            as system services outside of an application container). -->
+                        <executable>true</executable>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>${mvnPlugin.enforcer.version}</version>
+                    <executions>
+                        <execution>
+                            <!-- Make sure that only non-snapshot versions
+                                are used for the dependencies. Only active when property 'snapshotDependencyAllowed'
+                                is false. -->
+                            <id>enforce-no-snapshots</id>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                            <configuration>
+                                <skip>${snapshotsAllowed}</skip>
+                                <rules>
+                                    <requireReleaseDeps>
+                                        <message>No snapshot dependencies allowed for release builds!</message>
+                                    </requireReleaseDeps>
+                                    <requireReleaseVersion>
+                                        <message>No snapshot version allowed for release builds!</message>
+                                    </requireReleaseVersion>
+                                </rules>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!--Release management plugins-->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>${mvnPlugin.versioning.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-scm-plugin</artifactId>
+                    <version>${mvnPlugin.scm.version}</version>
+                    <configuration>
+                        <tag>v${project.version}</tag>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${mvnPlugin.deploy.version}</version>
+                    <configuration>
+                        <uniqueVersion>false</uniqueVersion>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <!-- Used to copy the log4j2 configuration to target folder so we will be able to start
+                            locally the application. We don't want to include the log4j2 config in resources folder
+                            because we want to keep it external to resulting jar. In this way we can easily customize it
+                            for each application instance.
+                            This step will only work like this - the <resources> configuration is already used in
+                            spring-boot-starter-parent to copy the resources so we don't want to break that. -->
+                            <id>copy-log4j2-config</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>copy-resources</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>${project.build.directory}/config</outputDirectory>
+                                <resources>
+                                    <resource>
+                                        <directory>${project.basedir}/config</directory>
+                                        <!-- what -->
+                                        <includes>
+                                            <include>**/*.xml</include>
+                                        </includes>
+                                    </resource>
+                                </resources>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${mvnPlugin.checkstyle.version}</version>
+
+                    <configuration>
+                        <skip>false</skip>
+                        <failsOnError>true</failsOnError>
+                        <consoleOutput>true</consoleOutput>
+                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+
+                        <headerLocation>${mvnPlugin.checkstyle.licenseHeader}</headerLocation>
+                        <configLocation>${mvnPlugin.checkstyle.mainConfig}</configLocation>
+                        <suppressionsLocation>${mvnPlugin.checkstyle.suppressionConfig}</suppressionsLocation>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <phase>process-test-classes</phase>
+                            <goals>
+                                <goal>checkstyle</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>findbugs-maven-plugin</artifactId>
+                    <version>${mvnPlugin.findbugs.version}</version>
+                    <configuration>
+                        <failOnError>true</failOnError>
+                        <!-- Enables analysis which takes more memory but finds more bugs. If you run out of memory,
+                        changes the value of the effort element to 'Low'. -->
+                        <effort>Max</effort>
+                        <!-- Reports all bugs (other values are medium and max) -->
+                        <threshold>Low</threshold>
+                        <!-- Configures the directory in which the XML report is created -->
+                        <findbugsXmlOutputDirectory>${mvnPlugin.findbugs.findbugsXmlOutputDirectory}
+                        </findbugsXmlOutputDirectory>
+                        <excludeFilterFile>${mvnPlugin.findbugs.excludeFilterFile}</excludeFilterFile>
+                        <includeTests>true</includeTests>
+                    </configuration>
+                    <executions>
+                        <!--Ensures that FindBugs inspects source code when
+                            project is compiled. -->
+                        <execution>
+                            <id>analyze-compile</id>
+                            <phase>process-test-classes</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${mvnPlugin.jacoco.version}</version>
+                    <configuration>
+                        <destFile>${mvnPlugin.jacoco.reportPath}</destFile>
+                        <append>true</append>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>default-prepare-agent</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>default-report</id>
+                            <phase>prepare-package</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.flywaydb</groupId>
+                    <artifactId>flyway-maven-plugin</artifactId>
+                    <version>${flyway.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+            </plugin>
+        </plugins>
+
+    </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${mvnPlugin.checkstyle.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${mvnPlugin.jacoco.version}</version>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <profiles>
+
+        <profile>
+            <!--This profile is used for our normal build process which include
+                analysis from checkstyle, findbugs and jacoco + of course the integration tests. -->
+            <id>normal-build</id>
+
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-enforcer-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-checkstyle-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>findbugs-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <!--Profile that should only be used to build the parent pom.
+                Needed to not let normal-build profile take over and try to run checkstyle,
+                findbugs, jacoco, etc -->
+            <id>parent-build</id>
+        </profile>
+
+        <profile>
+            <!--This profile is used to create just a simple compilation
+                build - without any plugin analysis, and without integration tests. As the
+                name says this is unsafe and should be used very carefully. However there
+                are a few use cases where this is useful, For example when you just want
+                to put some code on the development machine fast or in the release process. -->
+            <id>fast-unsafe-build</id>
+
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+        </profile>
+
+    </profiles>
+
 </project>
