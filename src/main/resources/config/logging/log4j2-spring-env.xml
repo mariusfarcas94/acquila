@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="DEBUG">
+
+    <Properties>
+        <Property name="consolePatternLayout">%clr{%d{yyyy-MM-dd HH:mm:ss,SSS}}{blue} %clr{%-5p} %clr{[TR=%X{cmvTracingId}]}{magenta} %clr{%t}{yellow} %clr{%c}{cyan} - %m%n
+        </Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${consolePatternLayout}"/>
+        </Console>
+        <Sentry name="Sentry"/>
+    </Appenders>
+
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="Sentry" level="ERROR"/>
+        </Root>
+    </Loggers>
+
+</Configuration>

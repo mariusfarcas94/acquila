@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="DEBUG">
+
+    <Properties>
+        <Property name="consolePatternLayout">%clr{%d{yyyy-MM-dd HH:mm:ss,SSS}}{blue} %clr{%-5p} %clr{[TR=%X{cmvTracingId}]}{magenta} %clr{%t}{yellow} %clr{%c}{cyan} - %m%n
+        </Property>
+        <Property name="filePatternLayout">%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [TR=%X{cmvTrackingId}] %t %c - %m%n</Property>
+
+        <Property name="fileNameCommon">tmp/logs/camversity-account</Property>
+
+        <Property name="fileNameError">${fileNameCommon}-error.log</Property>
+        <Property name="fileNameInfo">${fileNameCommon}-info.log</Property>
+        <Property name="fileNameDebug">${fileNameCommon}-debug.log</Property>
+
+        <Property name="fileRollingSuffix">%d{yyyy-MM-dd}</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${consolePatternLayout}"/>
+        </Console>
+
+        <Sentry name="Sentry"/>
+
+        <RollingFile name="errorFileAppender" fileName="${fileNameError}" filePattern="${fileNameError}.${fileRollingSuffix}">
+            <PatternLayout pattern="${filePatternLayout}"/>
+
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+        </RollingFile>
+
+        <RollingFile name="infoFileAppender" fileName="${fileNameInfo}" filePattern="${fileNameInfo}.${fileRollingSuffix}">
+            <PatternLayout pattern="${filePatternLayout}"/>
+
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+        </RollingFile>
+
+        <RollingFile name="debugFileAppender" fileName="${fileNameDebug}" filePattern="${fileNameDebug}.${fileRollingSuffix}">
+            <PatternLayout pattern="${filePatternLayout}"/>
+
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+
+            <ThresholdFilter level="TRACE" onMatch="ACCEPT" onMismatch="DENY"/>
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="Sentry" level="ERROR"/>
+
+            <AppenderRef ref="errorFileAppender"/>
+            <AppenderRef ref="infoFileAppender"/>
+            <AppenderRef ref="debugFileAppender"/>
+        </Root>
+    </Loggers>
+
+</Configuration>
