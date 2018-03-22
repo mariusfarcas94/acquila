@@ -6,6 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 import lombok.extern.log4j.Log4j2;
 
+
 /**
  * Acquila application main class.
  */

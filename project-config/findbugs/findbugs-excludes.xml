@@ -1,2 +1,6 @@
 <FindBugsFilter>
+    <Match>
+        <Class name="com.acquila.validation.exception.AcquilaException"/>
+        <Bug pattern="SE_BAD_FIELD"/>
+    </Match>
 </FindBugsFilter>
