@@ -3,7 +3,7 @@ package com.acquila.security.dto;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.acquila.core.enumerated.Role;
+import com.acquila.common.enumerated.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Builder;

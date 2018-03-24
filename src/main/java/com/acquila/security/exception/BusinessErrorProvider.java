@@ -1,6 +1,6 @@
 package com.acquila.security.exception;
 
-import com.acquila.core.validation.exception.BusinessError;
+import com.acquila.common.validation.exception.BusinessError;
 
 import static com.acquila.security.exception.AuthBusinessErrorType.SESSION_EXPIRED;
 

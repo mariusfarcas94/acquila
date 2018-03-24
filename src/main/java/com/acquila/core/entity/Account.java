@@ -5,8 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+import com.acquila.common.enumerated.Role;
 import com.acquila.core.entity.common.BaseEntity;
-import com.acquila.core.enumerated.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

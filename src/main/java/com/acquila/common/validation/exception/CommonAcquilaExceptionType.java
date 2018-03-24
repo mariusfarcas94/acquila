@@ -1,4 +1,4 @@
-package com.acquila.core.validation.exception;
+package com.acquila.common.validation.exception;
 
 /**
  * An enum holding the common exception type (illegal arguments exceptions, etc).

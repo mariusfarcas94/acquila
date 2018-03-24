@@ -1,4 +1,4 @@
-package com.acquila.core.enumerated;
+package com.acquila.common.enumerated;
 
 /**
  * Enum that holds the role types.

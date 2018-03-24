@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.acquila.core.enumerated.Role;
+import com.acquila.common.enumerated.Role;
 import com.acquila.security.dto.AccountDto;
 import com.acquila.security.dto.TokenGenerationDto;
 import com.acquila.security.dto.TokenVerificationResponseDto;
@@ -23,7 +23,7 @@ import lombok.extern.log4j.Log4j2;
 import static org.apache.logging.log4j.util.Strings.isEmpty;
 import static org.hibernate.validator.internal.util.CollectionHelper.asSet;
 import static org.springframework.util.CollectionUtils.isEmpty;
-import static com.acquila.core.validation.ObjectValidator.throwIfInvalid;
+import static com.acquila.common.validation.ObjectValidator.throwIfInvalid;
 import static com.acquila.security.exception.AuthExceptionProvider.tokenNotFoundOrSessionExpired;
 import static com.acquila.security.exception.BusinessErrorProvider.sessionExpired;
 
@@ -44,10 +44,10 @@ public class AuthServiceImpl implements AuthService {
     private final AccountCacheRepository accountCache;
 
     @Value("${jwt.token.expiration}")
-    private int tokenExpiration;
+    private Integer tokenExpiration;
 
     @Value("${account.session.expiration}")
-    private int sessionExpiration;
+    private Integer sessionExpiration;
 
     public AuthServiceImpl(JwtTokenHandler jwtTokenHandler,
                            SessionCacheRepository sessionCache,
@@ -69,7 +69,6 @@ public class AuthServiceImpl implements AuthService {
 
         final String token = jwtTokenHandler.createTokenForAccount(tokenGenerationDto);
 
-        // put user token in cache
         saveDataToCache(token, tokenGenerationDto.getAccountId());
 
         return token;
@@ -138,8 +137,6 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public void logout(final String token) {
-        final AccountDto parsedAuthToken = jwtTokenHandler.parseAccountFromToken(token);
-
         if (!sessionCache.clearByKey(token)) {
             log.debug("[Logout] Token not found: " + token);
         }
