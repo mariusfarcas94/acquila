@@ -1,7 +1,7 @@
 package com.acquila.security.exception;
 
 
-import com.acquila.core.validation.exception.AcquilaExceptionType;
+import com.acquila.common.validation.exception.AcquilaExceptionType;
 
 import lombok.Getter;
 

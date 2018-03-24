@@ -1,8 +1,8 @@
-package com.acquila.core.validation.exception;
+package com.acquila.common.validation.exception;
 
 import java.util.List;
 
-import static com.acquila.core.validation.exception.CommonAcquilaExceptionType.ILLEGAL_ARGUMENT_EXCEPTION;
+import static com.acquila.common.validation.exception.CommonAcquilaExceptionType.ILLEGAL_ARGUMENT_EXCEPTION;
 
 /**
  * Exception provider for generic exception that do not belong to a specific aggregate.

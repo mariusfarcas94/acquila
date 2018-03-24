@@ -18,7 +18,7 @@ import static com.acquila.core.enumerated.AcquisitionType.WORK;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Work {
+public class Work extends Acquisition {
 
     @Column(nullable = false, updatable = false)
     public int orderingNumber;

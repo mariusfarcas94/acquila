@@ -1,4 +1,4 @@
-package com.acquila.core.validation.exception;
+package com.acquila.common.validation.exception;
 
 /**
  * Common interface that will describe the business error types enums.

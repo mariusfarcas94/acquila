@@ -1,6 +1,6 @@
 package com.acquila.security.dto;
 
-import com.acquila.core.enumerated.Role;
+import com.acquila.common.enumerated.Role;
 
 import lombok.Builder;
 import lombok.Getter;

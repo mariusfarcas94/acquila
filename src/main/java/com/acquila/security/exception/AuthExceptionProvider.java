@@ -2,8 +2,8 @@ package com.acquila.security.exception;
 
 import java.util.List;
 
-import com.acquila.core.validation.exception.AcquilaException;
-import com.acquila.core.validation.exception.BusinessError;
+import com.acquila.common.validation.exception.AcquilaException;
+import com.acquila.common.validation.exception.BusinessError;
 
 import static com.acquila.security.exception.AuthExceptionType.PARSING_ACCOUNT_FROM_TOKEN_FAILED;
 import static com.acquila.security.exception.AuthExceptionType.SESSION_NOT_FOUND_FOR_TOKEN;

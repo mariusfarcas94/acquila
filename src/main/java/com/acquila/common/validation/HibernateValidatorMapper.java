@@ -1,4 +1,4 @@
-package com.acquila.core.validation;
+package com.acquila.common.validation;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,19 +18,19 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.acquila.core.validation.exception.BusinessError;
-import com.acquila.core.validation.exception.BusinessErrorType;
+import com.acquila.common.validation.exception.BusinessError;
+import com.acquila.common.validation.exception.BusinessErrorType;
 
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
-import static com.acquila.core.validation.exception.GenericBusinessErrorType.BLANK_STRING;
-import static com.acquila.core.validation.exception.GenericBusinessErrorType.EMPTY_STRING;
-import static com.acquila.core.validation.exception.GenericBusinessErrorType.INPUT_TOO_SHORT;
-import static com.acquila.core.validation.exception.GenericBusinessErrorType.INVALID_EMAIL_FORMAT;
-import static com.acquila.core.validation.exception.GenericBusinessErrorType.INVALID_INPUT_SIZE;
-import static com.acquila.core.validation.exception.GenericBusinessErrorType.MAX_VALUE;
-import static com.acquila.core.validation.exception.GenericBusinessErrorType.MIN_VALUE;
-import static com.acquila.core.validation.exception.GenericBusinessErrorType.NULL_FIELD;
+import static com.acquila.common.validation.exception.GenericBusinessErrorType.BLANK_STRING;
+import static com.acquila.common.validation.exception.GenericBusinessErrorType.EMPTY_STRING;
+import static com.acquila.common.validation.exception.GenericBusinessErrorType.INPUT_TOO_SHORT;
+import static com.acquila.common.validation.exception.GenericBusinessErrorType.INVALID_EMAIL_FORMAT;
+import static com.acquila.common.validation.exception.GenericBusinessErrorType.INVALID_INPUT_SIZE;
+import static com.acquila.common.validation.exception.GenericBusinessErrorType.MAX_VALUE;
+import static com.acquila.common.validation.exception.GenericBusinessErrorType.MIN_VALUE;
+import static com.acquila.common.validation.exception.GenericBusinessErrorType.NULL_FIELD;
 
 
 /**

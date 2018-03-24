@@ -1,4 +1,4 @@
-package com.acquila.core.validation.exception;
+package com.acquila.common.validation.exception;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -1,17 +1,17 @@
-package com.acquila.core.validation.exception;
+package com.acquila.common.validation.exception;
 
 
-import static com.acquila.core.validation.exception.GenericBusinessErrorType.BLANK_STRING;
-import static com.acquila.core.validation.exception.GenericBusinessErrorType.EMPTY_COLLECTION;
-import static com.acquila.core.validation.exception.GenericBusinessErrorType.EMPTY_STRING;
-import static com.acquila.core.validation.exception.GenericBusinessErrorType.INPUT_TOO_SHORT;
-import static com.acquila.core.validation.exception.GenericBusinessErrorType.INTERNAL_SERVER_ERROR;
-import static com.acquila.core.validation.exception.GenericBusinessErrorType.INVALID_EMAIL_FORMAT;
-import static com.acquila.core.validation.exception.GenericBusinessErrorType.INVALID_UUID_FORMAT;
-import static com.acquila.core.validation.exception.GenericBusinessErrorType.MIN_VALUE;
-import static com.acquila.core.validation.exception.GenericBusinessErrorType.NOT_FOUND;
-import static com.acquila.core.validation.exception.GenericBusinessErrorType.NULL_FIELD;
-import static com.acquila.core.validation.exception.GenericBusinessErrorType.NULL_PARAMETER;
+import static com.acquila.common.validation.exception.GenericBusinessErrorType.BLANK_STRING;
+import static com.acquila.common.validation.exception.GenericBusinessErrorType.EMPTY_COLLECTION;
+import static com.acquila.common.validation.exception.GenericBusinessErrorType.EMPTY_STRING;
+import static com.acquila.common.validation.exception.GenericBusinessErrorType.INPUT_TOO_SHORT;
+import static com.acquila.common.validation.exception.GenericBusinessErrorType.INTERNAL_SERVER_ERROR;
+import static com.acquila.common.validation.exception.GenericBusinessErrorType.INVALID_EMAIL_FORMAT;
+import static com.acquila.common.validation.exception.GenericBusinessErrorType.INVALID_UUID_FORMAT;
+import static com.acquila.common.validation.exception.GenericBusinessErrorType.MIN_VALUE;
+import static com.acquila.common.validation.exception.GenericBusinessErrorType.NOT_FOUND;
+import static com.acquila.common.validation.exception.GenericBusinessErrorType.NULL_FIELD;
+import static com.acquila.common.validation.exception.GenericBusinessErrorType.NULL_PARAMETER;
 
 /**
  * Factory class used to hide the creation logic of BusinessError objects.

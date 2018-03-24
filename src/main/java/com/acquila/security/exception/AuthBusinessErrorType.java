@@ -1,6 +1,6 @@
 package com.acquila.security.exception;
 
-import com.acquila.core.validation.exception.BusinessErrorType;
+import com.acquila.common.validation.exception.BusinessErrorType;
 
 import lombok.Getter;
 

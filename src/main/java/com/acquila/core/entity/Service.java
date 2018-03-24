@@ -18,7 +18,7 @@ import static com.acquila.core.enumerated.AcquisitionType.SERVICE;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Service {
+public class Service extends Acquisition{
 
     @Column(nullable = false, updatable = false)
     public int orderingNumber;

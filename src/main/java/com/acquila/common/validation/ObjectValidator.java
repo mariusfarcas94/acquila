@@ -1,4 +1,4 @@
-package com.acquila.core.validation;
+package com.acquila.common.validation;
 
 import java.util.List;
 import java.util.Map;
@@ -9,12 +9,12 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.metadata.ConstraintDescriptor;
 
-import com.acquila.core.validation.exception.AcquilaException;
-import com.acquila.core.validation.exception.BusinessError;
-import com.acquila.core.validation.exception.BusinessErrorType;
+import com.acquila.common.validation.exception.AcquilaException;
+import com.acquila.common.validation.exception.BusinessError;
+import com.acquila.common.validation.exception.BusinessErrorType;
 
 import static java.util.Collections.singletonList;
-import static com.acquila.core.validation.exception.GenericBusinessErrorProvider.nullParameterError;
+import static com.acquila.common.validation.exception.GenericBusinessErrorProvider.nullParameterError;
 
 /**
  * Utility class used for validating request dtos.
