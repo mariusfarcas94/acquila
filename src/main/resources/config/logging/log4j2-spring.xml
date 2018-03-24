@@ -6,7 +6,7 @@
         </Property>
         <Property name="filePatternLayout">%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [TR=%X{cmvTrackingId}] %t %c - %m%n</Property>
 
-        <Property name="fileNameCommon">tmp/logs/camversity-account</Property>
+        <Property name="fileNameCommon">tmp/logs/acquila</Property>
 
         <Property name="fileNameError">${fileNameCommon}-error.log</Property>
         <Property name="fileNameInfo">${fileNameCommon}-info.log</Property>
