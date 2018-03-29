@@ -5,5 +5,6 @@ package com.acquila.core.enumerated;
  */
 public enum AcquisitionType {
     SERVICE,
-    WORK
+    WORK,
+    PROCEDURE
 }

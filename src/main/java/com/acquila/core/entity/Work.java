@@ -12,18 +12,16 @@ import lombok.Setter;
 import static com.acquila.core.enumerated.AcquisitionType.WORK;
 
 /**
- * Entity representing an acquisition of the type: works.
+ * Entity representing a direct acquisition of the type: works.
  */
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
-public class Work extends Acquisition {
+public class Work extends DirectAcquisition {
 
     @Column(nullable = false, updatable = false)
     public int orderingNumber;
-
-    //todo(mfarcas) - add other fields here
 
     public AcquisitionType getType() {
         return WORK;

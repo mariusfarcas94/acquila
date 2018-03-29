@@ -1,16 +1,15 @@
 package com.acquila.core.entity;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.acquila.core.entity.common.BaseEntity;
-import com.acquila.core.enumerated.AcquisitionStatus;
 import com.acquila.core.enumerated.AcquisitionType;
 
 import lombok.Getter;
@@ -30,8 +29,16 @@ public abstract class Acquisition extends BaseEntity {
     private Account creator;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private AcquisitionStatus status;
+    private String objective;
+
+    @Column(nullable = false)
+    private String cpvCode;
+
+    @Column(nullable = false)
+    private BigDecimal estimatedValue;
+
+    @Column(nullable = false)
+    private String financingSource;
 
     public abstract AcquisitionType getType();
 
