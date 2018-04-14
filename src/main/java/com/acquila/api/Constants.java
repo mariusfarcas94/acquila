@@ -21,13 +21,13 @@ class Constants {
     static final String UPDATE = "/update";
 
     // Common api path variables
-    static final String TYPE_VARIABLE = "{type}";
-    static final String ID_VARIABLE = "{id}";
+    static final String TYPE_VARIABLE = "/{type}";
+    static final String ID_VARIABLE = "/{id}";
 
     // Common parameters names
     static final String PAGE_NUMBER = "pageNumber";
     static final String PAGE_SIZE = "pageSize";
     static final String CPV_CODE = "cpv";
-    static final String ID = "cpv";
+    static final String ID = "id";
     static final String TYPE = "type";
 }

@@ -59,13 +59,17 @@ public class AcquisitionController {
 
     private static final String CENTRALIZER_PATH = CENTRALIZER + TYPE_VARIABLE;
 
-    private static final String DETAILS_PATH = DETAILS + ID_VARIABLE;
+    private static final String DETAILS_PATH = DETAILS;
 
     private static final String CREATE_DIRECT_ACQUISITION_PATH = DIRECT + CREATE;
 
     private static final String CREATE_PROCEDURE_PATH = PROCEDURE + CREATE;
 
     private static final String UPDATE_ACQUISITION_PATH = UPDATE;
+
+    static {
+        printControllerDetails();
+    }
 
 
     @GetMapping(ALL_SERVICES_PATH)
@@ -122,14 +126,14 @@ public class AcquisitionController {
 
     @PostMapping(CREATE_DIRECT_ACQUISITION_PATH)
     public ResponseEntity createDirectAcquisition(@RequestBody final DirectAcquisitionDetails acquisitionDetails) {
-        log.debug("ServiceDetails: " + acquisitionDetails);
+        log.debug("AcquisitionDetails: " + acquisitionDetails);
 
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping(CREATE_PROCEDURE_PATH)
     public ResponseEntity createProcedure(@RequestBody final ProcedureDetails acquisitionDetails) {
-        log.debug("ServiceDetails: " + acquisitionDetails);
+        log.debug("ProcedureDetails: " + acquisitionDetails);
 
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -139,5 +143,19 @@ public class AcquisitionController {
         log.debug("UpdateStatusDetails: " + updateStatusDetails);
 
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    private static void printControllerDetails() {
+        System.out.println("###### Acquisition Controller REST Endpoints ######");
+
+        System.out.println("HTTP GET: " + ACQUISITION + ALL_SERVICES_PATH + " \n--Params: " + PAGE_NUMBER + ", " + PAGE_SIZE + "\n");
+        System.out.println("HTTP GET: " + ACQUISITION + ALL_WORKS_PATH + " \n--Params: " + PAGE_NUMBER + ", " + PAGE_SIZE + "\n");
+        System.out.println("HTTP GET: " + ACQUISITION + ALL_PROCEDURES_PATH + " \n--Params: " + PAGE_NUMBER + ", " + PAGE_SIZE + "\n");
+        System.out.println("HTTP GET: " + ACQUISITION + ALL_ARCHIVE_PATH + " \n--Params: " + PAGE_NUMBER + ", " + PAGE_SIZE + "\n");
+        System.out.println("HTTP GET: " + ACQUISITION + CENTRALIZER_PATH + " \n--Params: " + CPV_CODE + "\n");
+        System.out.println("HTTP GET: " + ACQUISITION + DETAILS_PATH + " \n--Params: " + ID + "\n");
+        System.out.println("HTTP POST: " + ACQUISITION + CREATE_DIRECT_ACQUISITION_PATH + "\n");
+        System.out.println("HTTP POST: " + ACQUISITION + CREATE_PROCEDURE_PATH + "\n");
+        System.out.println("HTTP POST: " + ACQUISITION + UPDATE_ACQUISITION_PATH + "\n");
     }
 }
