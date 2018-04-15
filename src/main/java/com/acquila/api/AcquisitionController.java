@@ -49,6 +49,8 @@ import static com.acquila.common.dto.pagination.mapper.PaginationMapper.buildPag
 @Log4j2
 public class AcquisitionController {
 
+    //todo(mfarcas) - add aspect to treat exceptions uniformly
+
     private static final String ALL_SERVICES_PATH = DIRECT + SERVICE + ALL;
 
     private static final String ALL_WORKS_PATH = DIRECT + WORK + ALL;
@@ -81,18 +83,15 @@ public class AcquisitionController {
     public ResponseEntity getAllServices(@RequestParam(name = PAGE_NUMBER) final int pageNumber,
                                          @RequestParam(name = PAGE_SIZE) final int pageSize) {
         final PaginationRequest pageRequest = buildPaginationRequest(pageSize, pageNumber);
+        log.debug("Pagination Request: ", pageRequest);
 
-        //todo(mfarcas) - add aspect to treat exceptions uniformly
         try {
-            final PaginationResponse<AcquisitionDetails> response =
-                    acquisitionService.getAllServices(pageRequest);
-
-            log.debug("Pagination Request: ", pageRequest);
-
+            final PaginationResponse<AcquisitionDetails> response = acquisitionService.getAllServices(pageRequest);
             return new ResponseEntity<>(response, HttpStatus.OK);
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(e.getMessage());
         }
     }
@@ -144,12 +143,19 @@ public class AcquisitionController {
         return new ResponseEntity<>(new AcquisitionDetails(), HttpStatus.OK);
     }
 
-    //todo(mfarcas) - implement method
     @PostMapping(CREATE_DIRECT_ACQUISITION_PATH)
     public ResponseEntity createDirectAcquisition(@RequestBody final DirectAcquisitionDetails acquisitionDetails) {
         log.debug("AcquisitionDetails: " + acquisitionDetails);
 
-        return new ResponseEntity(HttpStatus.OK);
+        try {
+            acquisitionService.createDirectAcquisition(acquisitionDetails);
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
+        }
     }
 
     //todo(mfarcas) - implement method

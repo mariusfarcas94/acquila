@@ -12,7 +12,7 @@ public class OrderNumber {
 
     @Id
     @Column
-    private String year;
+    private int year;
 
     @Column(nullable = false)
     private int servicesNumber;
@@ -22,4 +22,17 @@ public class OrderNumber {
 
     @Column(nullable = false)
     private int proceduresNumber;
+
+    public int getNextServiceNumber() {
+        return servicesNumber++;
+    }
+
+    public int getNextWorkNumber() {
+        return worksNumber++;
+    }
+
+    public int getNextProcedureNumber() {
+        return proceduresNumber++;
+    }
+
 }

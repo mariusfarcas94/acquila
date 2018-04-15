@@ -48,10 +48,10 @@ CREATE TABLE direct_acquisition (
   PRIMARY KEY (id)
 );
 CREATE TABLE order_number (
-  year              VARCHAR(255) NOT NULL,
-  procedures_number INT4         NOT NULL,
-  services_number   INT4         NOT NULL,
-  works_number      INT4         NOT NULL,
+  year              INT4 NOT NULL,
+  procedures_number INT4 NOT NULL,
+  services_number   INT4 NOT NULL,
+  works_number      INT4 NOT NULL,
   PRIMARY KEY (year)
 );
 CREATE TABLE procedure (
