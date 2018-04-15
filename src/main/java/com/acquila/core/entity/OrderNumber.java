@@ -4,8 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.acquila.core.entity.common.BaseEntity;
-
 /**
  * Entity holding the order numbers for all the types of acquisitions.
  */

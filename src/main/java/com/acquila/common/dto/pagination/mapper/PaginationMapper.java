@@ -33,7 +33,7 @@ public class PaginationMapper {
      * @param <D>             - the data transfer object type.
      * @return
      */
-    public static <E, D> PaginationResponse<D> toPaginationResponseDto(Page<E> page, Function<E, D> mappingFunction) {
+    public static <E, D> PaginationResponse<D> buildPaginationResponseDto(Page<E> page, Function<E, D> mappingFunction) {
         PaginationResponse<D> responseDto = new PaginationResponse<>();
         responseDto.setTotalElements(page.getTotalElements());
         responseDto.setTotalPages(page.getTotalPages());
