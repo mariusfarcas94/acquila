@@ -10,6 +10,7 @@ import javax.persistence.InheritanceType;
 import com.acquila.core.enumerated.DirectAcquisitionStatus;
 
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Abstract class representing a direct acquisition.
@@ -17,6 +18,7 @@ import lombok.Getter;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
+@Setter
 public abstract class DirectAcquisition extends Acquisition {
 
     @Column(nullable = false)

@@ -7,6 +7,7 @@ import com.acquila.core.enumerated.AcquisitionType;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import static com.acquila.core.enumerated.AcquisitionType.WORK;
@@ -17,6 +18,7 @@ import static com.acquila.core.enumerated.AcquisitionType.WORK;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class Work extends DirectAcquisition {
 

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import com.acquila.core.enumerated.AcquisitionType;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +19,7 @@ import static com.acquila.core.enumerated.AcquisitionType.SERVICE;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Service extends DirectAcquisition {
