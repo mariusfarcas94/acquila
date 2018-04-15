@@ -1,6 +1,7 @@
 package com.acquila.core.entity;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
@@ -12,6 +13,7 @@ import static com.acquila.core.enumerated.AcquisitionType.PROCEDURE;
 /**
  * Entity representing an acquisition of the type: procedure.
  */
+@Entity
 public class Procedure extends Acquisition {
 
     @Column(nullable = false)

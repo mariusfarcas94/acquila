@@ -18,6 +18,7 @@ import com.acquila.common.dto.request.ProcedureDetails;
 import com.acquila.common.dto.request.UpdateStatusDetails;
 import com.acquila.common.dto.response.AcquisitionDetails;
 import com.acquila.common.dto.response.CentralizedDetails;
+import com.acquila.core.service.acquisition.AcquisitionService;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -30,7 +31,6 @@ import static com.acquila.api.Constants.CREATE;
 import static com.acquila.api.Constants.DETAILS;
 import static com.acquila.api.Constants.DIRECT;
 import static com.acquila.api.Constants.ID;
-import static com.acquila.api.Constants.ID_VARIABLE;
 import static com.acquila.api.Constants.PAGE_NUMBER;
 import static com.acquila.api.Constants.PAGE_SIZE;
 import static com.acquila.api.Constants.PROCEDURE;
@@ -71,17 +71,33 @@ public class AcquisitionController {
         printControllerDetails();
     }
 
+    private final AcquisitionService acquisitionService;
 
-    @GetMapping(ALL_SERVICES_PATH)
-    public ResponseEntity<PaginationResponse<AcquisitionDetails>> getAllServices(@RequestParam(name = PAGE_NUMBER) final int pageNumber,
-                                                                                 @RequestParam(name = PAGE_SIZE) final int pageSize) {
-        final PaginationRequest paginationRequest = buildPaginationRequest(pageSize, pageNumber);
-
-        log.debug("Pagination Request: ", paginationRequest);
-
-        return new ResponseEntity<>(new PaginationResponse<>(), HttpStatus.OK);
+    public AcquisitionController(final AcquisitionService acquisitionService) {
+        this.acquisitionService = acquisitionService;
     }
 
+    @GetMapping(ALL_SERVICES_PATH)
+    public ResponseEntity getAllServices(@RequestParam(name = PAGE_NUMBER) final int pageNumber,
+                                         @RequestParam(name = PAGE_SIZE) final int pageSize) {
+        final PaginationRequest pageRequest = buildPaginationRequest(pageSize, pageNumber);
+
+        //todo(mfarcas) - add aspect to treat exceptions uniformly
+        try {
+            final PaginationResponse<AcquisitionDetails> response =
+                    acquisitionService.getAllServices(pageRequest);
+
+            log.debug("Pagination Request: ", pageRequest);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
+        }
+    }
+
+    //todo(mfarcas) - implement method
     @GetMapping(ALL_WORKS_PATH)
     public ResponseEntity<PaginationResponse<AcquisitionDetails>> getAllWorks(@RequestParam(name = PAGE_NUMBER) final int pageNumber,
                                                                               @RequestParam(name = PAGE_SIZE) final int pageSize) {
@@ -91,6 +107,7 @@ public class AcquisitionController {
         return new ResponseEntity<>(new PaginationResponse<>(), HttpStatus.OK);
     }
 
+    //todo(mfarcas) - implement method
     @GetMapping(ALL_PROCEDURES_PATH)
     public ResponseEntity<PaginationResponse<AcquisitionDetails>> getAllProcedures(@RequestParam(name = PAGE_NUMBER) final int pageNumber,
                                                                                    @RequestParam(name = PAGE_SIZE) final int pageSize) {
@@ -100,6 +117,7 @@ public class AcquisitionController {
         return new ResponseEntity<>(new PaginationResponse<>(), HttpStatus.OK);
     }
 
+    //todo(mfarcas) - implement method
     @GetMapping(ALL_ARCHIVE_PATH)
     public ResponseEntity<PaginationResponse<AcquisitionDetails>> getArchive(@RequestParam(name = PAGE_NUMBER) final int pageNumber,
                                                                              @RequestParam(name = PAGE_SIZE) final int pageSize) {
@@ -109,6 +127,7 @@ public class AcquisitionController {
         return new ResponseEntity<>(new PaginationResponse<>(), HttpStatus.OK);
     }
 
+    //todo(mfarcas) - implement method
     @GetMapping(CENTRALIZER_PATH)
     public ResponseEntity<CentralizedDetails> getCentralizer(@PathVariable(name = TYPE) final String type,
                                                              @RequestParam(name = CPV_CODE) final int cpvCode) {
@@ -117,6 +136,7 @@ public class AcquisitionController {
         return new ResponseEntity<>(new CentralizedDetails(), HttpStatus.OK);
     }
 
+    //todo(mfarcas) - implement method
     @GetMapping(DETAILS_PATH)
     public ResponseEntity<AcquisitionDetails> getAcquisitionDetails(@RequestParam(name = ID) final String id) {
         log.debug("Acquisition ID: " + id);
@@ -124,6 +144,7 @@ public class AcquisitionController {
         return new ResponseEntity<>(new AcquisitionDetails(), HttpStatus.OK);
     }
 
+    //todo(mfarcas) - implement method
     @PostMapping(CREATE_DIRECT_ACQUISITION_PATH)
     public ResponseEntity createDirectAcquisition(@RequestBody final DirectAcquisitionDetails acquisitionDetails) {
         log.debug("AcquisitionDetails: " + acquisitionDetails);
@@ -131,6 +152,7 @@ public class AcquisitionController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    //todo(mfarcas) - implement method
     @PostMapping(CREATE_PROCEDURE_PATH)
     public ResponseEntity createProcedure(@RequestBody final ProcedureDetails acquisitionDetails) {
         log.debug("ProcedureDetails: " + acquisitionDetails);
@@ -138,6 +160,7 @@ public class AcquisitionController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    //todo(mfarcas) - implement method
     @PutMapping(UPDATE_ACQUISITION_PATH)
     public ResponseEntity updateAcquisition(@RequestBody final UpdateStatusDetails updateStatusDetails) {
         log.debug("UpdateStatusDetails: " + updateStatusDetails);
