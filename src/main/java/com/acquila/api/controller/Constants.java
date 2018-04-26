@@ -1,4 +1,4 @@
-package com.acquila.api;
+package com.acquila.api.controller;
 
 /**
  * Contains all the common parameters as constants.
@@ -19,6 +19,7 @@ class Constants {
     static final String DETAILS = "/details";
     static final String CREATE = "/create";
     static final String UPDATE = "/update";
+    static final String LIMIT = "/limit";
 
     // Common api path variables
     static final String TYPE_VARIABLE = "/{type}";
@@ -30,4 +31,5 @@ class Constants {
     static final String CPV_CODE = "cpv";
     static final String ID = "id";
     static final String TYPE = "type";
+    static final String AMOUNT = "amount";
 }

@@ -26,4 +26,12 @@ public class PaginationRequest {
     @NotNull
     @Min(0)
     private Integer pageNumber;
+
+    @Override
+    public String toString() {
+        return "PaginationRequest{" +
+                "pageSize=" + pageSize +
+                ", pageNumber=" + pageNumber +
+                '}';
+    }
 }

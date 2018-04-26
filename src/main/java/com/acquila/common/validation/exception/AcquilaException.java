@@ -35,4 +35,10 @@ public class AcquilaException extends RuntimeException {
     public boolean hasSingleError(BusinessError error) {
         return errorList.size() == 1 && hasError(error);
     }
+
+    public String extractErrorList() {
+        return errorList.stream()
+                .map(BusinessError::toString)
+                .reduce("", (a, b) -> a + b);
+    }
 }
