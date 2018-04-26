@@ -16,7 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class AcquisitionDetails {
+public class AcquisitionDetailsResponse {
 
     public int orderingNumber;
 

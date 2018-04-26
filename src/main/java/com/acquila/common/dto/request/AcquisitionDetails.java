@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.acquila.core.enumerated.AcquisitionType;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +22,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DirectAcquisitionDetails {
+@JsonDeserialize
+public class AcquisitionDetails {
 
     @NotBlank
     private String objective;
@@ -42,6 +44,22 @@ public class DirectAcquisitionDetails {
     @NotBlank
     private String finalDate;
 
-    @NotBlank
     private AcquisitionType type;
+
+    @NotBlank
+    private String extraRemarks;
+
+    @Override
+    public String toString() {
+        return "AcquisitionDetails{" +
+                "objective='" + objective + '\'' +
+                ", cpvCode='" + cpvCode + '\'' +
+                ", estimatedValue=" + estimatedValue +
+                ", financingSource='" + financingSource + '\'' +
+                ", initialDate='" + initialDate + '\'' +
+                ", finalDate='" + finalDate + '\'' +
+                ", type=" + type +
+                ", extraRemarks='" + extraRemarks + '\'' +
+                '}';
+    }
 }
