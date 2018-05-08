@@ -10,6 +10,7 @@ CREATE TABLE account (
   username        VARCHAR(255) NOT NULL,
   PRIMARY KEY (id)
 );
+
 CREATE TABLE acquisition (
   id               UUID           NOT NULL,
   created          TIMESTAMP      NOT NULL,
@@ -21,6 +22,7 @@ CREATE TABLE acquisition (
   creator_id       UUID           NOT NULL,
   PRIMARY KEY (id)
 );
+
 CREATE TABLE comment (
   id             UUID         NOT NULL,
   created        TIMESTAMP    NOT NULL,
@@ -30,6 +32,7 @@ CREATE TABLE comment (
   acquisition_id UUID         NOT NULL,
   PRIMARY KEY (id)
 );
+
 CREATE TABLE confirmation_code (
   id          UUID        NOT NULL,
   created     TIMESTAMP   NOT NULL,
@@ -40,6 +43,7 @@ CREATE TABLE confirmation_code (
   account_id  UUID        NOT NULL,
   PRIMARY KEY (id)
 );
+
 CREATE TABLE direct_acquisition (
   final_date   VARCHAR(255) NOT NULL,
   initial_date VARCHAR(255) NOT NULL,
@@ -47,6 +51,7 @@ CREATE TABLE direct_acquisition (
   id           UUID         NOT NULL,
   PRIMARY KEY (id)
 );
+
 CREATE TABLE order_number (
   year              INT4 NOT NULL,
   procedures_number INT4 NOT NULL,
@@ -54,22 +59,28 @@ CREATE TABLE order_number (
   works_number      INT4 NOT NULL,
   PRIMARY KEY (year)
 );
+
 CREATE TABLE procedure (
-  procedure_type VARCHAR(50)  NOT NULL,
-  status         VARCHAR(255) NOT NULL,
-  id             UUID         NOT NULL,
+  estimated_period VARCHAR(50)  NOT NULL,
+  ordering_number  INT4         NOT NULL,
+  procedure_type   VARCHAR(50)  NOT NULL,
+  status           VARCHAR(255) NOT NULL,
+  id               UUID         NOT NULL,
   PRIMARY KEY (id)
 );
+
 CREATE TABLE service (
   ordering_number INT4 NOT NULL,
   id              UUID NOT NULL,
   PRIMARY KEY (id)
 );
+
 CREATE TABLE work (
   ordering_number INT4 NOT NULL,
   id              UUID NOT NULL,
   PRIMARY KEY (id)
 );
+
 ALTER TABLE account
   ADD CONSTRAINT UK_q0uja26qgu1atulenwup9rxyr UNIQUE (email);
 ALTER TABLE account
@@ -90,3 +101,8 @@ ALTER TABLE service
   ADD CONSTRAINT FK5puqu4mnaluyckt70og9j883r FOREIGN KEY (id) REFERENCES direct_acquisition;
 ALTER TABLE work
   ADD CONSTRAINT FKm170nxamggrgusq6kod6ij0mi FOREIGN KEY (id) REFERENCES direct_acquisition;
+
+INSERT INTO order_number (year, procedures_number, services_number, works_number) VALUES (2018, 0, 0, 0);
+
+INSERT INTO account (id, created, updated, email, email_confirmed, enabled, password, role, username) VALUES
+  ('018b36dd-cc81-4309-9875-ef1a7d47e6ac', '2017-10-30 14:26:27', null, 'bobi@gmail.com', true, true, 'password', 'ADMIN', 'Bobi');
