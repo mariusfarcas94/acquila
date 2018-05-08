@@ -213,7 +213,7 @@ public class AcquisitionServiceImpl implements AcquisitionService {
     //todo(mfarcas) - remove this after implementing login.
     private Account buildBobiAccount() {
         final Account account = new Account();
-        account.setId(UUID.fromString("c7892330-ead4-4d7f-ba1e-646bf24ffe80"));
+        account.setId(UUID.fromString("018b36dd-cc81-4309-9875-ef1a7d47e6ac"));
 
         return account;
     }

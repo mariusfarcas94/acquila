@@ -99,8 +99,8 @@ public class AcquisitionController {
 
     @GetMapping(ALL_WORKS_PATH)
     public ResponseEntity<PaginationResponse<AcquisitionDetailsResponse>> getAllWorks(final HttpServletResponse response,
-                                                                                      @RequestParam(name = PAGE_NUMBER) final int pageNumber,
-                                                                                      @RequestParam(name = PAGE_SIZE) final int pageSize) {
+                                                                                      @RequestParam(name = PAGE_NUMBER) int pageNumber,
+                                                                                      @RequestParam(name = PAGE_SIZE) int pageSize) {
         final PaginationRequest paginationRequest = buildPaginationRequest(pageSize, pageNumber);
         log.debug("Pagination Request: {}", paginationRequest);
 
@@ -110,9 +110,9 @@ public class AcquisitionController {
 
     @GetMapping(ALL_PROCEDURES_PATH)
     public ResponseEntity<PaginationResponse<AcquisitionDetailsResponse>> getAllProcedures(final HttpServletResponse response,
-                                                                                           @RequestParam(name = PAGE_NUMBER) final int pageNumber,
-                                                                                           @RequestParam(name = PAGE_SIZE) final int pageSize) {
-        final PaginationRequest paginationRequest = buildPaginationRequest(pageSize, pageNumber);
+                                                                                           @RequestParam(name = PAGE_NUMBER) int pageNr,
+                                                                                           @RequestParam(name = PAGE_SIZE) int pageSize) {
+        final PaginationRequest paginationRequest = buildPaginationRequest(pageSize, pageNr);
         log.debug("Pagination Request: {}", paginationRequest);
 
         final PaginationResponse<AcquisitionDetailsResponse> services = acquisitionService.getAllProcedures(paginationRequest);
