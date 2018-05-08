@@ -20,6 +20,7 @@ import com.acquila.core.entity.Service;
 import com.acquila.core.entity.Work;
 import com.acquila.core.enumerated.AcquisitionType;
 import com.acquila.core.enumerated.DirectAcquisitionStatus;
+import com.acquila.core.enumerated.Limit;
 import com.acquila.core.enumerated.ProcedureStatus;
 import com.acquila.core.exception.AcquisitionExceptionProvider;
 import com.acquila.core.mapping.ResponseMapper;
@@ -148,8 +149,8 @@ public class AcquisitionServiceImpl implements AcquisitionService {
      */
     @Override
     @Transactional(readOnly = true)
-    public boolean isOverLimit(BigDecimal amount, String cpvCode) {
-        return acquisitionRepository.isOverLimit(amount, new BigDecimal(0), cpvCode);
+    public boolean isOverLimit(BigDecimal amount, String cpvCode, String type) {
+        return acquisitionRepository.isOverLimit(amount, Limit.valueOf(type).getValue(), cpvCode);
     }
 
     /**

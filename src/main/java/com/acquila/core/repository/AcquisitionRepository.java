@@ -1,11 +1,14 @@
 package com.acquila.core.repository;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import com.acquila.common.dto.response.CentralizedDetails;
 import com.acquila.core.entity.Acquisition;
 
 /**

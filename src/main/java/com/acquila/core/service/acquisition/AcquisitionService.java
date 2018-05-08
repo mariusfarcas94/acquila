@@ -55,7 +55,8 @@ public interface AcquisitionService {
      *
      * @param amount  - the provided amount for the current acquisition.
      * @param cpvCode - the CPV code of the acquisition.
+     * @param type
      * @return - true if it exceeds, false if not.
      */
-    boolean isOverLimit(BigDecimal amount, String cpvCode);
+    boolean isOverLimit(BigDecimal amount, String cpvCode, String type);
 }

@@ -36,7 +36,9 @@ public enum GenericBusinessErrorType implements BusinessErrorType {
 
     UNRECOGNIZED_ERROR_TYPE(100112, "unrecognized_error_type"),
 
-    EMPTY_COLLECTION(100113, "empty_collection");
+    EMPTY_COLLECTION(100113, "empty_collection"),
+
+    INVALID_CPV(100113, "empty_collection");
 
 
     private int code;

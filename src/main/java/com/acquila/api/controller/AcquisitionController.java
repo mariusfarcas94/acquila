@@ -91,7 +91,7 @@ public class AcquisitionController {
                                          @RequestParam(name = PAGE_NUMBER) final int pageNumber,
                                          @RequestParam(name = PAGE_SIZE) final int pageSize) {
         final PaginationRequest paginationRequest = buildPaginationRequest(pageSize, pageNumber);
-        log.debug("Pagination Request: {}" + paginationRequest);
+        log.debug("Pagination Request: " + paginationRequest);
 
         final PaginationResponse<AcquisitionDetailsResponse> services = acquisitionService.getAllServices(paginationRequest);
         return new ResponseEntity<>(services, HttpStatus.OK);
@@ -102,7 +102,7 @@ public class AcquisitionController {
                                                                                       @RequestParam(name = PAGE_NUMBER) int pageNumber,
                                                                                       @RequestParam(name = PAGE_SIZE) int pageSize) {
         final PaginationRequest paginationRequest = buildPaginationRequest(pageSize, pageNumber);
-        log.debug("Pagination Request: {}", paginationRequest);
+        log.debug("Pagination Request: ", paginationRequest);
 
         final PaginationResponse<AcquisitionDetailsResponse> services = acquisitionService.getAllWorks(paginationRequest);
         return new ResponseEntity<>(services, HttpStatus.OK);
@@ -113,7 +113,7 @@ public class AcquisitionController {
                                                                                            @RequestParam(name = PAGE_NUMBER) int pageNr,
                                                                                            @RequestParam(name = PAGE_SIZE) int pageSize) {
         final PaginationRequest paginationRequest = buildPaginationRequest(pageSize, pageNr);
-        log.debug("Pagination Request: {}", paginationRequest);
+        log.debug("Pagination Request: ", paginationRequest);
 
         final PaginationResponse<AcquisitionDetailsResponse> services = acquisitionService.getAllProcedures(paginationRequest);
         return new ResponseEntity<>(services, HttpStatus.OK);
@@ -125,7 +125,7 @@ public class AcquisitionController {
                                                                                      @RequestParam(name = PAGE_NUMBER) final int pageNumber,
                                                                                      @RequestParam(name = PAGE_SIZE) final int pageSize) {
         final PaginationRequest paginationRequest = buildPaginationRequest(pageSize, pageNumber);
-        log.debug("Pagination Request: {}", paginationRequest);
+        log.debug("Pagination Request: ", paginationRequest);
 
         return new ResponseEntity<>(new PaginationResponse<>(), HttpStatus.OK);
     }
@@ -143,10 +143,11 @@ public class AcquisitionController {
     @GetMapping(OVER_LIMIT_PATH)
     public ResponseEntity<Boolean> isOverLimit(final HttpServletResponse response,
                                                @RequestParam(name = AMOUNT) final BigDecimal amount,
-                                               @RequestParam(name = CPV_CODE) final String cpvCode) {
-        log.debug("CPV Code: " + cpvCode);
+                                               @RequestParam(name = CPV_CODE) final String cpvCode,
+                                               @RequestParam(name = TYPE) final String type) {
+        log.debug("CPV Code: " + cpvCode + ", Amount: " + amount + ", Type:" + type);
 
-        return new ResponseEntity<>(acquisitionService.isOverLimit(amount, cpvCode),
+        return new ResponseEntity<>(acquisitionService.isOverLimit(amount, cpvCode, type),
                 HttpStatus.OK);
     }
 
@@ -165,7 +166,6 @@ public class AcquisitionController {
 
         acquisitionService.createDirectAcquisition(acquisitionDetails);
         return new ResponseEntity<>(HttpStatus.OK);
-
     }
 
     @PostMapping(CREATE_PROCEDURE_PATH)
@@ -193,6 +193,7 @@ public class AcquisitionController {
         System.out.println("HTTP GET: " + ACQUISITION + ALL_PROCEDURES_PATH + " \n--Params: " + PAGE_NUMBER + ", " + PAGE_SIZE + "\n");
         System.out.println("HTTP GET: " + ACQUISITION + ALL_ARCHIVE_PATH + " \n--Params: " + PAGE_NUMBER + ", " + PAGE_SIZE + "\n");
         System.out.println("HTTP GET: " + ACQUISITION + CENTRALIZER_PATH + " \n--Params: " + CPV_CODE + "\n");
+        System.out.println("HTTP GET: " + ACQUISITION + OVER_LIMIT_PATH + "\n--Params: " + AMOUNT + ", " + CPV_CODE + "\n");
         System.out.println("HTTP GET: " + ACQUISITION + DETAILS_PATH + " \n--Params: " + ID + "\n");
         System.out.println("HTTP POST: " + ACQUISITION + CREATE_DIRECT_ACQUISITION_PATH + "\n");
         System.out.println("HTTP POST: " + ACQUISITION + CREATE_PROCEDURE_PATH + "\n");
