@@ -18,6 +18,8 @@ import lombok.Setter;
 @Setter
 public class AcquisitionDetailsResponse {
 
+    public String id;
+
     public int orderingNumber;
 
     private String objective;
@@ -35,5 +37,7 @@ public class AcquisitionDetailsResponse {
     private String initialDate;
 
     private String finalDate;
+
+    private String procedureType;
 
 }

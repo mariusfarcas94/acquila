@@ -11,6 +11,7 @@ public class ResponseMapper {
 
     public static AcquisitionDetailsResponse mapToAcquisitionDetails(final DirectAcquisition directAcquisition) {
         return AcquisitionDetailsResponse.builder()
+                .id(directAcquisition.getId().toString())
                 .orderingNumber(directAcquisition.getOrderingNumber())
                 .objective(directAcquisition.getObjective())
                 .status(directAcquisition.getStatus().name())
@@ -25,6 +26,7 @@ public class ResponseMapper {
 
     public static AcquisitionDetailsResponse mapToAcquisitionDetails(final Procedure procedure) {
         return AcquisitionDetailsResponse.builder()
+                .id(procedure.getId().toString())
                 .orderingNumber(procedure.getOrderingNumber())
                 .objective(procedure.getObjective())
                 .status(procedure.getStatus().name())
@@ -33,6 +35,7 @@ public class ResponseMapper {
                 .estimatedValue(procedure.getEstimatedValue())
                 .financingSource(procedure.getFinancingSource())
                 .initialDate(procedure.getEstimatedPeriod())
+                .procedureType(procedure.getProcedureType())
                 .build();
     }
 }

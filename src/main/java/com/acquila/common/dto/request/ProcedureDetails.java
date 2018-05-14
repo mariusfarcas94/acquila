@@ -23,7 +23,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonDeserialize
-public class AcquisitionDetails {
+public class ProcedureDetails {
 
     @NotBlank
     private String objective;
@@ -44,14 +44,17 @@ public class AcquisitionDetails {
     @NotBlank
     private String finalDate;
 
+    @NotNull
     private AcquisitionType type;
 
     @NotBlank
+    private String procedureType;
+
     private String extraRemarks;
 
     @Override
     public String toString() {
-        return "AcquisitionDetails{" +
+        return "ProcedureDetails{" +
                 "objective='" + objective + '\'' +
                 ", cpvCode='" + cpvCode + '\'' +
                 ", estimatedValue=" + estimatedValue +
@@ -60,6 +63,7 @@ public class AcquisitionDetails {
                 ", finalDate='" + finalDate + '\'' +
                 ", type=" + type +
                 ", extraRemarks='" + extraRemarks + '\'' +
+                ", procedureType='" + procedureType + '\'' +
                 '}';
     }
 }

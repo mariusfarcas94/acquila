@@ -10,9 +10,13 @@ import lombok.Getter;
 @Getter
 public enum AcquisitionExceptionType implements AcquilaExceptionType {
 
-    ACQUISITION_RETRIEVAL_FAILED(001, "Acquisition retrieval failed"),
+    ACQUISITION_RETRIEVAL_FAILED(01, "Acquisition retrieval failed"),
 
-    ACQUISITION_CREATION_FAILED(002, "Acquisition creation failed");
+    ACQUISITION_CREATION_FAILED(02, "Acquisition creation failed"),
+
+    ACQUISITION_UPDATE_FAILED(03, "Acquisition update failed"),
+
+    LIMIT_CHECKING_FAILED(04, "Limit checking failed.");
 
     private final int code;
     private final String message;

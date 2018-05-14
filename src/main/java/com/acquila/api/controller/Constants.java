@@ -23,7 +23,7 @@ class Constants {
 
     // Common api path variables
     static final String TYPE_VARIABLE = "/{type}";
-    static final String ID_VARIABLE = "/{id}";
+    static final String YEAR_VARIABLE = "/{year}";
 
     // Common parameters names
     static final String PAGE_NUMBER = "pageNumber";
@@ -32,4 +32,6 @@ class Constants {
     static final String ID = "id";
     static final String TYPE = "type";
     static final String AMOUNT = "amount";
+    static final String YEAR = "year";
+
 }

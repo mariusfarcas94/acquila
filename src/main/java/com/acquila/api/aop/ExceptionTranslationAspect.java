@@ -30,12 +30,15 @@ public class ExceptionTranslationAspect implements Ordered {
             return pjp.proceed();
         } catch (final Exception e) {
             log.error(e);
+
+            //todo(mfarcas) - this is only for debugging
+            e.printStackTrace();
             // We set the response status to 500 (Internal Server Error)
             response.setStatus(500);
 
             //  If the thrown exception is an AcquilaException, then we add the error list to the response.
             if (e instanceof AcquilaException) {
-                response.getWriter().append(e.getMessage());
+                response.getWriter().append(e.toString());
             }
             return null;
         }
