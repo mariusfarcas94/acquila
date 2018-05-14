@@ -62,6 +62,7 @@ public class DirectAcquisitionDetails {
                 ", initialDate='" + initialDate + '\'' +
                 ", finalDate='" + finalDate + '\'' +
                 ", type=" + type +
+                ", year=" + year +
                 ", extraRemarks='" + extraRemarks + '\'' +
                 '}';
     }

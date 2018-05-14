@@ -41,6 +41,7 @@ import static java.util.Collections.singletonList;
 import static java.util.Optional.ofNullable;
 import static com.acquila.common.dto.pagination.mapper.PaginationMapper.buildPaginationResponseDto;
 import static com.acquila.common.dto.pagination.mapper.PaginationMapper.toPageRequest;
+import static com.acquila.common.dto.pagination.mapper.PaginationMapper.toSortedPageRequest;
 import static com.acquila.common.validation.ObjectValidator.throwIfEmpty;
 import static com.acquila.common.validation.ObjectValidator.throwIfInvalid;
 import static com.acquila.common.validation.ObjectValidator.throwIfNull;
@@ -93,7 +94,7 @@ public class AcquisitionServiceImpl implements AcquisitionService {
     public PaginationResponse<AcquisitionDetailsResponse> getAllServices(int year, final PaginationRequest paginationRequest) {
         throwIfInvalid(paginationRequest, AcquisitionExceptionProvider::getAcquisitionsException);
 
-        final PageRequest pageRequest = toPageRequest(paginationRequest);
+        final PageRequest pageRequest = toSortedPageRequest(paginationRequest);
         final Page<Service> page = serviceRepository.findAll(year, pageRequest);
 
         return buildPaginationResponseDto(page, ResponseMapper::mapToAcquisitionDetails);
@@ -107,7 +108,7 @@ public class AcquisitionServiceImpl implements AcquisitionService {
     public PaginationResponse<AcquisitionDetailsResponse> getAllWorks(int year, final PaginationRequest paginationRequest) {
         throwIfInvalid(paginationRequest, AcquisitionExceptionProvider::getAcquisitionsException);
 
-        final PageRequest pageRequest = toPageRequest(paginationRequest);
+        final PageRequest pageRequest = toSortedPageRequest(paginationRequest);
         final Page<Work> page = workRepository.findAll(year, pageRequest);
 
         return buildPaginationResponseDto(page, ResponseMapper::mapToAcquisitionDetails);
@@ -121,7 +122,7 @@ public class AcquisitionServiceImpl implements AcquisitionService {
     public PaginationResponse<AcquisitionDetailsResponse> getAllProcedures(int year, final PaginationRequest paginationRequest) {
         throwIfInvalid(paginationRequest, AcquisitionExceptionProvider::getAcquisitionsException);
 
-        final PageRequest pageRequest = toPageRequest(paginationRequest);
+        final PageRequest pageRequest = toSortedPageRequest(paginationRequest);
         final Page<Procedure> page = procedureRepository.findAll(year, pageRequest);
 
         return buildPaginationResponseDto(page, ResponseMapper::mapToAcquisitionDetails);
