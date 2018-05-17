@@ -63,6 +63,7 @@ public class RequestMapper {
         procedure.setFinancingSource(procedureDetails.getFinancingSource());
         procedure.setEstimatedPeriod(procedureDetails.getInitialDate());
         procedure.setProcedureType(procedureDetails.getProcedureType());
+        procedure.setYear(procedureDetails.getYear());
 
         return procedure;
     }

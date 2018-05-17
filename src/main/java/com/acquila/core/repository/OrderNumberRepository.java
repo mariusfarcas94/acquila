@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.acquila.core.entity.OrderNumber;
 
 /**
- * Procedure repository.
+ * Order number repository.
  */
 public interface OrderNumberRepository extends JpaRepository<OrderNumber, UUID> {
 

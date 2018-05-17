@@ -1,6 +1,7 @@
 package com.acquila.api.controller;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,10 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.acquila.common.dto.pagination.PaginationRequest;
 import com.acquila.common.dto.pagination.PaginationResponse;
 import com.acquila.common.dto.request.DirectAcquisitionDetails;
+import com.acquila.common.dto.request.NewCommentDetails;
 import com.acquila.common.dto.request.ProcedureDetails;
 import com.acquila.common.dto.request.UpdateStatusDetails;
 import com.acquila.common.dto.response.AcquisitionDetailsResponse;
 import com.acquila.common.dto.response.CentralizedDetails;
+import com.acquila.common.dto.response.CommentDetails;
 import com.acquila.core.service.acquisition.AcquisitionService;
 
 import lombok.extern.log4j.Log4j2;
@@ -31,9 +34,9 @@ import static com.acquila.api.controller.Constants.ALL;
 import static com.acquila.api.controller.Constants.AMOUNT;
 import static com.acquila.api.controller.Constants.ARCHIVE;
 import static com.acquila.api.controller.Constants.CENTRALIZER;
+import static com.acquila.api.controller.Constants.COMMENTS;
 import static com.acquila.api.controller.Constants.CPV_CODE;
 import static com.acquila.api.controller.Constants.CREATE;
-import static com.acquila.api.controller.Constants.DETAILS;
 import static com.acquila.api.controller.Constants.DIRECT;
 import static com.acquila.api.controller.Constants.ID;
 import static com.acquila.api.controller.Constants.LIMIT;
@@ -68,13 +71,15 @@ public class AcquisitionController {
 
     private static final String OVER_LIMIT_PATH = LIMIT;
 
-    private static final String DETAILS_PATH = DETAILS;
+    private static final String COMMENTS_PATH = COMMENTS;
 
     private static final String CREATE_DIRECT_ACQUISITION_PATH = DIRECT + CREATE;
 
     private static final String CREATE_PROCEDURE_PATH = PROCEDURE + CREATE;
 
     private static final String UPDATE_ACQUISITION_PATH = UPDATE;
+
+    private static final String ADD_COMMENT_PATH = COMMENTS + CREATE;
 
     static {
         printControllerDetails();
@@ -159,12 +164,14 @@ public class AcquisitionController {
                 HttpStatus.OK);
     }
 
-    @GetMapping(DETAILS_PATH)
-    public ResponseEntity getAcquisitionDetails(final HttpServletResponse response,
-                                                @RequestParam(name = ID) final String id) {
+    @GetMapping(COMMENTS_PATH)
+    public ResponseEntity getAcquisitionComments(final HttpServletResponse response,
+                                                 @RequestParam(name = ID) final String id) {
         log.debug("Acquisition ID: " + id);
 
-        return new ResponseEntity<>(new AcquisitionDetailsResponse(), HttpStatus.OK);
+        List<CommentDetails> comments = acquisitionService.getCommentsForAcquisition(id);
+
+        return new ResponseEntity<>(comments, HttpStatus.OK);
     }
 
     @PostMapping(CREATE_DIRECT_ACQUISITION_PATH)
@@ -182,6 +189,15 @@ public class AcquisitionController {
         log.debug("ProcedureDetails: " + procedureDetails);
 
         acquisitionService.createProcedure(procedureDetails);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(ADD_COMMENT_PATH)
+    public ResponseEntity addComment(final HttpServletResponse response,
+                                          @RequestBody final NewCommentDetails commentDetails) {
+        log.debug("NewCommentDetails: " + commentDetails);
+
+        acquisitionService.addComment(commentDetails);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -210,7 +226,7 @@ public class AcquisitionController {
 
         System.out.println("HTTP GET: " + ACQUISITION + OVER_LIMIT_PATH + "\n--Params: " + AMOUNT + ", " + CPV_CODE + "\n");
 
-        System.out.println("HTTP GET: " + ACQUISITION + DETAILS_PATH + " \n--Params: " + ID + "\n");
+        System.out.println("HTTP GET: " + ACQUISITION + COMMENTS_PATH + " \n--Params: " + ID + "\n");
 
         System.out.println("HTTP PUT: " + ACQUISITION + UPDATE_ACQUISITION_PATH + "\n");
 

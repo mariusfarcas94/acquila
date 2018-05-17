@@ -16,7 +16,7 @@ class Constants {
     static final String PROCEDURE = "/procedure";
     static final String ARCHIVE = "/archive";
     static final String CENTRALIZER = "/centralizer";
-    static final String DETAILS = "/details";
+    static final String COMMENTS = "/comments";
     static final String CREATE = "/create";
     static final String UPDATE = "/update";
     static final String LIMIT = "/limit";

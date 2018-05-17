@@ -1,6 +1,10 @@
 package com.acquila.core.mapping;
 
+import java.time.format.DateTimeFormatter;
+
 import com.acquila.common.dto.response.AcquisitionDetailsResponse;
+import com.acquila.common.dto.response.CommentDetails;
+import com.acquila.core.entity.Comment;
 import com.acquila.core.entity.DirectAcquisition;
 import com.acquila.core.entity.Procedure;
 
@@ -36,6 +40,15 @@ public class ResponseMapper {
                 .financingSource(procedure.getFinancingSource())
                 .initialDate(procedure.getEstimatedPeriod())
                 .procedureType(procedure.getProcedureType())
+                .build();
+    }
+
+    public static CommentDetails mapToCommentDetails(final Comment comment) {
+        return CommentDetails.builder()
+                .author(comment.getAccount().getUsername())
+                .type(comment.getType().name())
+                .text(comment.getText())
+                .date(comment.getCreated().format(DateTimeFormatter.ISO_DATE_TIME))
                 .build();
     }
 }

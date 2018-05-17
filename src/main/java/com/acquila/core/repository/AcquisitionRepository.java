@@ -18,12 +18,12 @@ import com.acquila.core.entity.Acquisition;
  */
 public interface AcquisitionRepository extends JpaRepository<Acquisition, UUID> {
 
-    @Query("select (sum(coalesce(a.estimatedValue, 0)) + ?1 > ?2) from Acquisition a where a.cpvCode = ?3")
+    @Query("select (sum(coalesce(da.estimatedValue, 0)) + ?1 > ?2) from DirectAcquisition da where da.cpvCode = ?3")
     Optional<Boolean> isOverLimit(BigDecimal amount, BigDecimal limit, String cpvCode);
 
     @Query("select new com.acquila.common.dto.response.CentralizedDetails(" +
-            "a.cpvCode, 'a', count (a), sum (a.estimatedValue), a.type) from Acquisition a " +
-            "where a.created > ?1 and a.created < ?2 " +
-            "group by a.cpvCode, a.type ")
+            "da.cpvCode, 'a', count (da), sum (da.estimatedValue), da.type) from DirectAcquisition da " +
+            "where da.created > ?1 and da.created < ?2 " +
+            "group by da.cpvCode, da.type ")
     Page<CentralizedDetails> getCentralizedData(OffsetDateTime from, OffsetDateTime to, Pageable pageRequest);
 }

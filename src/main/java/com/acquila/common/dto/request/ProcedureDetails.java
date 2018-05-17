@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Details needed for the creation of a direct acquisition.
@@ -23,6 +24,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonDeserialize
+@ToString
 public class ProcedureDetails {
 
     @NotBlank
@@ -41,29 +43,13 @@ public class ProcedureDetails {
     @NotBlank
     private String initialDate;
 
-    @NotBlank
-    private String finalDate;
-
     @NotNull
     private AcquisitionType type;
 
     @NotBlank
     private String procedureType;
 
-    private String extraRemarks;
+    private int year;
 
-    @Override
-    public String toString() {
-        return "ProcedureDetails{" +
-                "objective='" + objective + '\'' +
-                ", cpvCode='" + cpvCode + '\'' +
-                ", estimatedValue=" + estimatedValue +
-                ", financingSource='" + financingSource + '\'' +
-                ", initialDate='" + initialDate + '\'' +
-                ", finalDate='" + finalDate + '\'' +
-                ", type=" + type +
-                ", extraRemarks='" + extraRemarks + '\'' +
-                ", procedureType='" + procedureType + '\'' +
-                '}';
-    }
+    private String extraRemarks;
 }

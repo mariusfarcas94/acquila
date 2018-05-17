@@ -1,14 +1,17 @@
 package com.acquila.core.service.acquisition;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.acquila.common.dto.pagination.PaginationRequest;
 import com.acquila.common.dto.pagination.PaginationResponse;
 import com.acquila.common.dto.request.DirectAcquisitionDetails;
+import com.acquila.common.dto.request.NewCommentDetails;
 import com.acquila.common.dto.request.ProcedureDetails;
 import com.acquila.common.dto.request.UpdateStatusDetails;
 import com.acquila.common.dto.response.AcquisitionDetailsResponse;
 import com.acquila.common.dto.response.CentralizedDetails;
+import com.acquila.common.dto.response.CommentDetails;
 
 /**
  * Operations related to acquisitions.
@@ -17,7 +20,6 @@ public interface AcquisitionService {
 
     /**
      * Retrieves all the services, paginated.
-     *
      *
      * @param year
      * @param paginationRequest - the provided pagination details.
@@ -28,7 +30,6 @@ public interface AcquisitionService {
     /**
      * Retrieves all the works, paginated.
      *
-     *
      * @param year
      * @param paginationRequest - the provided pagination details.
      * @return - paginated acquisitions.
@@ -37,7 +38,6 @@ public interface AcquisitionService {
 
     /**
      * Retrieves all the procedures, paginated.
-     *
      *
      * @param year
      * @param paginationRequest - the provided pagination details.
@@ -84,4 +84,19 @@ public interface AcquisitionService {
      * @param updateStatusDetails - the provided update acquisition details.
      */
     void updateAcquisitionStatus(UpdateStatusDetails updateStatusDetails);
+
+    /**
+     * Retrieve the list of the comments for a specific acquisition.
+     *
+     * @param id - the acquisition's ID.
+     * @return the list of comments.
+     */
+    List<CommentDetails> getCommentsForAcquisition(String id);
+
+    /**
+     * Create a new comment.
+     *
+     * @param commentDetails - the new comment details.
+     */
+    void addComment(NewCommentDetails commentDetails);
 }

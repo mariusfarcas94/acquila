@@ -16,7 +16,9 @@ public enum AcquisitionExceptionType implements AcquilaExceptionType {
 
     ACQUISITION_UPDATE_FAILED(03, "Acquisition update failed"),
 
-    LIMIT_CHECKING_FAILED(04, "Limit checking failed.");
+    LIMIT_CHECKING_FAILED(04, "Limit checking failed."),
+
+    ADD_COMMENT_FAILED(05, "The comment could not be added.");
 
     private final int code;
     private final String message;

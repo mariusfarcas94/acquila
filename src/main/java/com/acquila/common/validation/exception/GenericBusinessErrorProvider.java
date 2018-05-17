@@ -24,6 +24,8 @@ public class GenericBusinessErrorProvider {
 
     public static final String TYPE_FIELD = "type";
 
+    public static final String ID_FIELD = "id";
+
     public static BusinessError nullParameterError() {
         return new BusinessError(NULL_PARAMETER);
     }
