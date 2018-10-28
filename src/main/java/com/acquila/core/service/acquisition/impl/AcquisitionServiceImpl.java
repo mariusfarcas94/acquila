@@ -1,8 +1,13 @@
 package com.acquila.core.service.acquisition.impl;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,19 +16,28 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.acquila.common.dto.pagination.PaginationRequest;
 import com.acquila.common.dto.pagination.PaginationResponse;
-import com.acquila.common.dto.request.AcquisitionDetails;
+import com.acquila.common.dto.request.DirectAcquisitionDetails;
+import com.acquila.common.dto.request.NewCommentDetails;
+import com.acquila.common.dto.request.ProcedureDetails;
+import com.acquila.common.dto.request.UpdateStatusDetails;
 import com.acquila.common.dto.response.AcquisitionDetailsResponse;
+import com.acquila.common.dto.response.CentralizedDetails;
+import com.acquila.common.dto.response.CommentDetails;
 import com.acquila.core.entity.Account;
+import com.acquila.core.entity.Acquisition;
+import com.acquila.core.entity.Comment;
 import com.acquila.core.entity.OrderNumber;
 import com.acquila.core.entity.Procedure;
 import com.acquila.core.entity.Service;
 import com.acquila.core.entity.Work;
 import com.acquila.core.enumerated.AcquisitionType;
+import com.acquila.core.enumerated.CommentType;
 import com.acquila.core.enumerated.DirectAcquisitionStatus;
 import com.acquila.core.enumerated.ProcedureStatus;
 import com.acquila.core.exception.AcquisitionExceptionProvider;
 import com.acquila.core.mapping.ResponseMapper;
 import com.acquila.core.repository.AcquisitionRepository;
+import com.acquila.core.repository.CommentRepository;
 import com.acquila.core.repository.OrderNumberRepository;
 import com.acquila.core.repository.ProcedureRepository;
 import com.acquila.core.repository.ServiceRepository;
@@ -31,10 +45,23 @@ import com.acquila.core.repository.WorkRepository;
 import com.acquila.core.service.acquisition.AcquisitionService;
 
 import static java.time.LocalDate.now;
+import static java.util.Collections.singletonList;
+import static java.util.Optional.ofNullable;
 import static com.acquila.common.dto.pagination.mapper.PaginationMapper.buildPaginationResponseDto;
 import static com.acquila.common.dto.pagination.mapper.PaginationMapper.toPageRequest;
+import static com.acquila.common.dto.pagination.mapper.PaginationMapper.toSortedPageRequest;
+import static com.acquila.common.validation.ObjectValidator.throwIfEmpty;
 import static com.acquila.common.validation.ObjectValidator.throwIfInvalid;
+import static com.acquila.common.validation.ObjectValidator.throwIfNull;
+import static com.acquila.common.validation.exception.AcquilaExceptionProvider.illegalArgumentsException;
+import static com.acquila.common.validation.exception.GenericBusinessErrorProvider.CPV_CODE_FIELD;
+import static com.acquila.common.validation.exception.GenericBusinessErrorProvider.ID_FIELD;
+import static com.acquila.common.validation.exception.GenericBusinessErrorProvider.TYPE_FIELD;
+import static com.acquila.common.validation.exception.GenericBusinessErrorProvider.emptyStringError;
+import static com.acquila.common.validation.exception.GenericBusinessErrorProvider.invalidUUID;
 import static com.acquila.common.validation.exception.GenericBusinessErrorProvider.notFoundError;
+import static com.acquila.common.validation.exception.GenericBusinessErrorProvider.nullParameterError;
+import static com.acquila.core.exception.AcquisitionExceptionProvider.checkLimitException;
 import static com.acquila.core.exception.AcquisitionExceptionProvider.createAcquisitionException;
 import static com.acquila.core.mapping.RequestMapper.buildProcedureEntity;
 import static com.acquila.core.mapping.RequestMapper.buildServiceEntity;
@@ -56,16 +83,20 @@ public class AcquisitionServiceImpl implements AcquisitionService {
 
     private final AcquisitionRepository acquisitionRepository;
 
+    private final CommentRepository commentRepository;
+
     public AcquisitionServiceImpl(final ServiceRepository serviceRepository,
                                   final WorkRepository workRepository,
                                   final ProcedureRepository procedureRepository,
                                   final OrderNumberRepository orderNumberRepository,
-                                  final AcquisitionRepository acquisitionRepository) {
+                                  final AcquisitionRepository acquisitionRepository,
+                                  final CommentRepository commentRepository) {
         this.serviceRepository = serviceRepository;
         this.workRepository = workRepository;
         this.procedureRepository = procedureRepository;
         this.orderNumberRepository = orderNumberRepository;
         this.acquisitionRepository = acquisitionRepository;
+        this.commentRepository = commentRepository;
     }
 
     /**
@@ -73,11 +104,11 @@ public class AcquisitionServiceImpl implements AcquisitionService {
      */
     @Override
     @Transactional(readOnly = true)
-    public PaginationResponse<AcquisitionDetailsResponse> getAllServices(final PaginationRequest paginationRequest) {
+    public PaginationResponse<AcquisitionDetailsResponse> getAllServices(int year, final PaginationRequest paginationRequest) {
         throwIfInvalid(paginationRequest, AcquisitionExceptionProvider::getAcquisitionsException);
 
-        final PageRequest pageRequest = toPageRequest(paginationRequest);
-        final Page<Service> page = serviceRepository.findAll(pageRequest);
+        final PageRequest pageRequest = toSortedPageRequest(paginationRequest);
+        final Page<Service> page = serviceRepository.findAll(year, pageRequest);
 
         return buildPaginationResponseDto(page, ResponseMapper::mapToAcquisitionDetails);
     }
@@ -87,11 +118,11 @@ public class AcquisitionServiceImpl implements AcquisitionService {
      */
     @Override
     @Transactional(readOnly = true)
-    public PaginationResponse<AcquisitionDetailsResponse> getAllWorks(PaginationRequest paginationRequest) {
+    public PaginationResponse<AcquisitionDetailsResponse> getAllWorks(int year, final PaginationRequest paginationRequest) {
         throwIfInvalid(paginationRequest, AcquisitionExceptionProvider::getAcquisitionsException);
 
-        final PageRequest pageRequest = toPageRequest(paginationRequest);
-        final Page<Work> page = workRepository.findAll(pageRequest);
+        final PageRequest pageRequest = toSortedPageRequest(paginationRequest);
+        final Page<Work> page = workRepository.findAll(year, pageRequest);
 
         return buildPaginationResponseDto(page, ResponseMapper::mapToAcquisitionDetails);
     }
@@ -101,11 +132,11 @@ public class AcquisitionServiceImpl implements AcquisitionService {
      */
     @Override
     @Transactional(readOnly = true)
-    public PaginationResponse<AcquisitionDetailsResponse> getAllProcedures(PaginationRequest paginationRequest) {
+    public PaginationResponse<AcquisitionDetailsResponse> getAllProcedures(int year, final PaginationRequest paginationRequest) {
         throwIfInvalid(paginationRequest, AcquisitionExceptionProvider::getAcquisitionsException);
 
-        final PageRequest pageRequest = toPageRequest(paginationRequest);
-        final Page<Procedure> page = procedureRepository.findAll(pageRequest);
+        final PageRequest pageRequest = toSortedPageRequest(paginationRequest);
+        final Page<Procedure> page = procedureRepository.findAll(year, pageRequest);
 
         return buildPaginationResponseDto(page, ResponseMapper::mapToAcquisitionDetails);
     }
@@ -115,7 +146,7 @@ public class AcquisitionServiceImpl implements AcquisitionService {
      */
     @Override
     @Transactional
-    public void createDirectAcquisition(final AcquisitionDetails acquisitionDetails) {
+    public void createDirectAcquisition(final DirectAcquisitionDetails acquisitionDetails) {
         throwIfInvalid(acquisitionDetails, AcquisitionExceptionProvider::createAcquisitionException);
 
         switch (acquisitionDetails.getType()) {
@@ -135,12 +166,19 @@ public class AcquisitionServiceImpl implements AcquisitionService {
      */
     @Override
     @Transactional
-    public void createProcedure(AcquisitionDetails acquisitionDetails) {
-        final Procedure procedure = buildProcedureEntity(acquisitionDetails);
+    public void createProcedure(final ProcedureDetails procedureDetails) {
+        throwIfInvalid(procedureDetails, AcquisitionExceptionProvider::createAcquisitionException);
 
-        procedure.setOrderingNumber(getNextOrderNumber(acquisitionDetails.getType()));
+        final Procedure procedure = buildProcedureEntity(procedureDetails);
+        procedure.setOrderingNumber(getNextOrderNumber(procedureDetails.getType()));
         procedure.setStatus(ProcedureStatus.PLANNED);
         procedure.setCreator(buildBobiAccount());
+        procedure.setType(AcquisitionType.PROCEDURE);
+
+        procedureRepository.save(procedure);
+
+        final Comment creationComment = buildCreationComment(procedure);
+        commentRepository.save(creationComment);
     }
 
     /**
@@ -148,8 +186,105 @@ public class AcquisitionServiceImpl implements AcquisitionService {
      */
     @Override
     @Transactional(readOnly = true)
-    public boolean isOverLimit(BigDecimal amount, String cpvCode) {
-        return acquisitionRepository.isOverLimit(amount, new BigDecimal(0), cpvCode);
+    public boolean isOverLimit(final BigDecimal amount, final String cpvCode, final String type) {
+        throwIfNull(amount, () -> checkLimitException(nullParameterError()));
+        throwIfEmpty(cpvCode, () -> checkLimitException(emptyStringError(CPV_CODE_FIELD)));
+        throwIfEmpty(type, () -> checkLimitException(emptyStringError(TYPE_FIELD)));
+
+        final BigDecimal limit = AcquisitionType.valueOf(type).getValue();
+
+        return acquisitionRepository.isOverLimit(amount, limit, cpvCode)
+                .orElse(amount.compareTo(limit) > 0);
+    }
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public PaginationResponse<CentralizedDetails> getCentralizedAcquisitions(final int year, final PaginationRequest paginationRequest) {
+        throwIfInvalid(paginationRequest, AcquisitionExceptionProvider::getAcquisitionsException);
+
+        final PageRequest pageRequest = toPageRequest(paginationRequest);
+
+        final OffsetDateTime from = getStartOfYear(year);
+        final OffsetDateTime to = getEndOfYear(year);
+
+        final Page<CentralizedDetails> page = acquisitionRepository.getCentralizedData(from, to, pageRequest);
+
+        page.getContent().forEach(e -> decorateWithYearAndLimit(year, e));
+
+        return buildPaginationResponseDto(page, Function.identity());
+    }
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Override
+    @Transactional
+    public void updateAcquisitionStatus(final UpdateStatusDetails updateStatusDetails) {
+        throwIfInvalid(updateStatusDetails, AcquisitionExceptionProvider::updateAcquisitionException);
+
+        final AcquisitionType type = AcquisitionType.valueOf(updateStatusDetails.getType());
+
+        final String newStatus = updateStatusDetails.getNewStatus();
+
+        switch (type) {
+            case PROCEDURE:
+                ofNullable(procedureRepository.findOne(uuidFromString(updateStatusDetails.getAcquisitionId())))
+                        .ifPresent(p -> p.setStatus(ProcedureStatus.valueOf(newStatus)));
+                break;
+            case SERVICE:
+                ofNullable(serviceRepository.findOne(uuidFromString(updateStatusDetails.getAcquisitionId())))
+                        .ifPresent(p -> p.setStatus(DirectAcquisitionStatus.valueOf(newStatus)));
+                break;
+            case WORK:
+                ofNullable(workRepository.findOne(uuidFromString(updateStatusDetails.getAcquisitionId())))
+                        .ifPresent(p -> p.setStatus(DirectAcquisitionStatus.valueOf(newStatus)));
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<CommentDetails> getCommentsForAcquisition(final String id) {
+        throwIfEmpty(id, () -> checkLimitException(emptyStringError(ID_FIELD)));
+
+        return commentRepository.findAllByAcquisition_Id(uuidFromString(id)).stream()
+                .map(ResponseMapper::mapToCommentDetails)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * {@inheritDoc}.
+     */
+    @Override
+    @Transactional
+    public void addComment(NewCommentDetails commentDetails) {
+        throwIfInvalid(commentDetails, AcquisitionExceptionProvider::addCommentException);
+
+        commentRepository.save(buildCommentEntity(commentDetails));
+    }
+
+    /**
+     * Create comment entity based on the given comment details.
+     *
+     * @param commentDetails - the provided comment details.
+     * @return the created comment entity.
+     */
+    private Comment buildCommentEntity(final NewCommentDetails commentDetails) {
+        final Comment comment = new Comment();
+        comment.setText(commentDetails.getText());
+        comment.setAcquisition(acquisitionRepository.findOne(uuidFromString(commentDetails.getAcquisitionId())));
+        comment.setAccount(buildBobiAccount());
+        comment.setType(CommentType.USER_COMMENT);
+
+        return comment;
     }
 
     /**
@@ -157,15 +292,18 @@ public class AcquisitionServiceImpl implements AcquisitionService {
      *
      * @param acquisitionDetails - the new service details.
      */
-    private void createService(final AcquisitionDetails acquisitionDetails) {
+    private void createService(final DirectAcquisitionDetails acquisitionDetails) {
 
         final Service service = buildServiceEntity(acquisitionDetails);
-
         service.setOrderingNumber(getNextOrderNumber(acquisitionDetails.getType()));
         service.setStatus(DirectAcquisitionStatus.PLANNED);
         service.setCreator(buildBobiAccount());
+        service.setType(AcquisitionType.SERVICE);
 
         serviceRepository.save(service);
+
+        final Comment creationComment = buildCreationComment(service);
+        commentRepository.save(creationComment);
     }
 
     /**
@@ -173,15 +311,41 @@ public class AcquisitionServiceImpl implements AcquisitionService {
      *
      * @param acquisitionDetails - the new work details.
      */
-    private void createWork(AcquisitionDetails acquisitionDetails) {
+    private void createWork(final DirectAcquisitionDetails acquisitionDetails) {
 
         final Work work = buildWorkEntity(acquisitionDetails);
-
         work.setOrderingNumber(getNextOrderNumber(acquisitionDetails.getType()));
         work.setStatus(DirectAcquisitionStatus.PLANNED);
         work.setCreator(buildBobiAccount());
+        work.setType(AcquisitionType.WORK);
 
         workRepository.save(work);
+
+        final Comment creationComment = buildCreationComment(work);
+        commentRepository.save(creationComment);
+    }
+
+    /**
+     * Build the creation comment for the provided acquisition.
+     *
+     * @param acquisition - the provided acquisition.
+     * @return the builded creation comment.
+     */
+    private Comment buildCreationComment(Acquisition acquisition) {
+        final Comment comment = new Comment();
+        comment.setType(CommentType.CREATION_NOTE);
+        comment.setAccount(acquisition.getCreator());
+        comment.setAcquisition(acquisition);
+        comment.setText(getCreationText(acquisition.getObjective(), comment.getAccount().getUsername()));
+
+        return comment;
+    }
+
+    /**
+     * Format the text for a creation comment.
+     */
+    private String getCreationText(final String objective, final String username) {
+        return String.format("Achizitia cu obiectivul %s a fost creata de catre %s.", objective, username);
     }
 
     /**
@@ -209,12 +373,48 @@ public class AcquisitionServiceImpl implements AcquisitionService {
         }
     }
 
-
     //todo(mfarcas) - remove this after implementing login.
+
     private Account buildBobiAccount() {
         final Account account = new Account();
         account.setId(UUID.fromString("018b36dd-cc81-4309-9875-ef1a7d47e6ac"));
 
         return account;
+    }
+
+    /**
+     * Decorate a centralized details object with the year and the limit corresponding to it's type.
+     */
+    private void decorateWithYearAndLimit(int year, CentralizedDetails centralizedDetails) {
+        centralizedDetails.setYear(year);
+        centralizedDetails.setLimit(centralizedDetails.getType().getValue());
+    }
+
+    /**
+     * Compute the end of the current year.
+     */
+    private OffsetDateTime getEndOfYear(int year) {
+        return OffsetDateTime.of(year, 12, 31, 23, 59, 59, 99999, ZoneOffset.UTC);
+    }
+
+    /**
+     * Compute the start of the current year.
+     */
+    private OffsetDateTime getStartOfYear(int year) {
+        return OffsetDateTime.of(year, 1, 1, 0, 0, 0, 1, ZoneOffset.UTC);
+    }
+
+    /**
+     * Create a UUID object from a String, throwing an exception if the String does not represent a valid UUID.
+     *
+     * @param uuidString - the String representing a UUID
+     * @return the UUID object.
+     */
+    private UUID uuidFromString(String uuidString) {
+        try {
+            return UUID.fromString(uuidString);
+        } catch (IllegalArgumentException e) {
+            throw illegalArgumentsException(singletonList(invalidUUID(ID_FIELD)));
+        }
     }
 }

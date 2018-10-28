@@ -20,6 +20,12 @@ public class GenericBusinessErrorProvider {
 
     private static final String EMAIL_FIELD = "email";
 
+    public static final String CPV_CODE_FIELD = "cpvCode";
+
+    public static final String TYPE_FIELD = "type";
+
+    public static final String ID_FIELD = "id";
+
     public static BusinessError nullParameterError() {
         return new BusinessError(NULL_PARAMETER);
     }

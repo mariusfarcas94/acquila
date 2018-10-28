@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import com.acquila.common.dto.pagination.PaginationRequest;
 import com.acquila.common.dto.pagination.PaginationResponse;
@@ -22,6 +23,16 @@ public class PaginationMapper {
      */
     public static PageRequest toPageRequest(PaginationRequest paginationRequest) {
         return new PageRequest(paginationRequest.getPageNumber(), paginationRequest.getPageSize());
+    }
+
+    /**
+     * Convert a pagination request to a JPA PageRequest.
+     *
+     * @param paginationRequest the requested pagination details.
+     * @return the page request.
+     */
+    public static PageRequest toSortedPageRequest(PaginationRequest paginationRequest) {
+        return new PageRequest(paginationRequest.getPageNumber(), paginationRequest.getPageSize(), Sort.Direction.DESC, "created");
     }
 
     /**

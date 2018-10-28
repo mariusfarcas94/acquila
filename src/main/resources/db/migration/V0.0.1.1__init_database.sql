@@ -20,6 +20,7 @@ CREATE TABLE acquisition (
   financing_source VARCHAR(255)   NOT NULL,
   objective        VARCHAR(255)   NOT NULL,
   creator_id       UUID           NOT NULL,
+  type             VARCHAR(255)   NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -105,4 +106,4 @@ ALTER TABLE work
 INSERT INTO order_number (year, procedures_number, services_number, works_number) VALUES (2018, 0, 0, 0);
 
 INSERT INTO account (id, created, updated, email, email_confirmed, enabled, password, role, username) VALUES
-  ('018b36dd-cc81-4309-9875-ef1a7d47e6ac', '2017-10-30 14:26:27', null, 'bobi@gmail.com', true, true, 'password', 'ADMIN', 'Bobi');
+  ('018b36dd-cc81-4309-9875-ef1a7d47e6ac', '2017-10-30 14:26:27', NULL, 'bobi@gmail.com', TRUE, TRUE, 'password', 'ADMIN', 'Bobi');

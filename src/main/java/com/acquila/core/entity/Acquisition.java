@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
@@ -40,6 +42,11 @@ public abstract class Acquisition extends BaseEntity {
     @Column(nullable = false)
     private String financingSource;
 
-    public abstract AcquisitionType getType();
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private AcquisitionType type;
+
+    @Column(nullable = false)
+    private Integer year;
 
 }
